@@ -1,7 +1,6 @@
 import Button from "../../components/Button";
 import Section from "../../components/Section";
 
-
 const included = [
   "Flexible aluminum duct",
   "Magnetic connector",
@@ -13,22 +12,22 @@ const included = [
 const steps = [
   {
     title: "Prepare the installation area",
-    text: "Ensure the wall vent area and dryer outlet are clean, accessible, and aligned for proper connector placement.",
+    text: "Ensure the wall vent area and dryer outlet are clean, accessible, and aligned before placing the connector.",
   },
   {
     title: "Position the magnetic connector",
-    text: "Place the connector onto the vent opening and verify that the contact surface sits evenly before securing.",
+    text: "Place the connector onto the vent opening and confirm that the contact surface sits evenly.",
   },
   {
     title: "Attach the duct",
     text: "Connect the flexible duct to the adapter and tighten the clamp until the connection feels firm and stable.",
   },
   {
-    title: "Secure mounting hardware",
+    title: "Secure the mounting hardware",
     text: "Use the included screws and anchors when wall mounting is required. Confirm the connector remains level.",
   },
   {
-    title: "Final alignment check",
+    title: "Check final alignment",
     text: "Move the dryer carefully into position and confirm that the magnetic connection aligns smoothly.",
   },
 ];
@@ -37,8 +36,8 @@ export default function DV180Page() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-blue-50 via-white to-slate-50 text-slate-950">
       <section className="mx-auto flex min-h-[82vh] w-full max-w-6xl flex-col justify-center px-5 py-20 md:px-8">
-        <p className="mb-5 text-xs font-semibold uppercase tracking-[0.28em] text-blue-700">
-          NINAN Commerce / Product Support
+        <p className="mb-5 text-xs font-semibold uppercase tracking-[0.28em] text-[#1d4f8f]">
+          NINAN Commerce / Product Guide
         </p>
 
         <h1 className="max-w-4xl text-4xl font-semibold tracking-tight md:text-6xl">
@@ -46,17 +45,15 @@ export default function DV180Page() {
         </h1>
 
         <p className="mt-6 max-w-2xl text-base leading-7 text-slate-600 md:text-lg">
-          Setup guidance, installation support, and product assistance for your
-          NINAN magnetic dryer vent connector kit.
+          Installation guidance, setup instructions, and onboarding information
+          for your DV180 magnetic dryer vent connector kit.
         </p>
 
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-          <Button href="mailto:support@ninan-commerce.com">
-            Contact Support
-          </Button>
+          <Button href="#installation">Start Guide</Button>
 
-          <Button href="#installation" variant="secondary">
-            View Installation Guide
+          <Button href="mailto:support@ninancommerce.com" variant="secondary">
+            Need Help?
           </Button>
         </div>
       </section>
@@ -83,7 +80,7 @@ export default function DV180Page() {
                 key={step.title}
                 className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm md:grid md:grid-cols-[80px_1fr] md:gap-8"
               >
-                <p className="mb-4 text-sm font-semibold text-blue-700 md:mb-0">
+                <p className="mb-4 text-sm font-semibold text-[#1d4f8f] md:mb-0">
                   {String(index + 1).padStart(2, "0")}
                 </p>
 
@@ -112,20 +109,20 @@ export default function DV180Page() {
         </div>
       </Section>
 
-      <Section eyebrow="Support" title="Need help with setup or product support?">
+      <Section eyebrow="Customer Assistance" title="Need help with your guide?">
         <div className="rounded-[2rem] bg-slate-950 p-8 text-white shadow-xl md:p-10">
           <p className="max-w-2xl text-sm leading-7 text-slate-300">
-            Our support flow is being built as part of the NINAN Commerce
-            ecosystem, including product assistance, warranty registration, and
-            customer experience tools.
+            For questions about setup, installation, or product use, contact
+            NINAN Commerce assistance. Warranty registration and expanded
+            product care flows will be available as the product ecosystem grows.
           </p>
 
           <div className="mt-7">
             <a
-              href="mailto:support@ninan-commerce.com"
+              href="mailto:support@ninancommerce.com"
               className="inline-flex rounded-full bg-white px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-blue-50"
             >
-              Email Support
+              Contact Assistance
             </a>
           </div>
         </div>
@@ -135,7 +132,8 @@ export default function DV180Page() {
         <div className="mx-auto max-w-6xl">
           <p className="font-semibold text-slate-900">NINAN Commerce</p>
           <p className="mt-2">
-            Scalable commerce infrastructure for premium product brands.
+            Product guides, onboarding, and customer assistance for NINAN
+            Commerce products.
           </p>
         </div>
       </footer>

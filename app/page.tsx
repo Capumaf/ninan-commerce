@@ -1,37 +1,35 @@
 export default function HomePage() {
   return (
-    <main className="min-h-screen bg-[#f6f9fc] text-slate-950">
-      <section className="mx-auto flex min-h-screen max-w-7xl flex-col justify-center px-6 py-24">
+    <main className="min-h-screen overflow-hidden bg-[#f6f9fc] text-slate-950">
+      <section className="relative mx-auto flex min-h-screen w-full max-w-6xl flex-col justify-center px-5 py-20 md:px-8">
 
-        <p className="mb-6 text-xs font-semibold uppercase tracking-[0.28em] text-blue-700">
+        <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,#dbeafe_0%,transparent_45%)]" />
+
+        <p className="mb-6 text-xs font-semibold uppercase tracking-[0.28em] text-[#1d4f8f]">
           NINAN Commerce
         </p>
 
-        <h1 className="max-w-4xl text-5xl font-semibold tracking-tight md:text-7xl">
-          Scalable commerce infrastructure for modern product brands.
+        <h1 className="max-w-5xl text-5xl font-semibold leading-[0.95] tracking-[-0.04em] md:text-7xl">
+          Practical products designed for modern everyday living.
         </h1>
 
         <p className="mt-8 max-w-2xl text-lg leading-8 text-slate-600">
-          Customer experience, product support, QR onboarding,
-          operational systems, and Amazon FBA infrastructure —
-          built into one scalable ecosystem.
+          NINAN Commerce develops modern private-label products with
+          structured onboarding, installation guidance, and reliable
+          customer support designed for long-term everyday use.
         </p>
 
-        <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-          <a
-            href="/dv180"
-            className="inline-flex items-center justify-center rounded-full bg-blue-700 px-7 py-4 text-sm font-semibold text-white shadow-lg transition hover:bg-blue-800"
-          >
-            Open DV180 Support
-          </a>
+        <div className="mt-10">
 
           <a
-            href="/os"
-            className="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-7 py-4 text-sm font-semibold text-slate-900 transition hover:border-blue-300"
+            href="/products"
+            className="inline-flex items-center justify-center rounded-full bg-[#1d4f8f] px-7 py-4 text-sm font-semibold text-white shadow-lg shadow-blue-900/10 transition hover:bg-[#163b6b]"
           >
-            Commerce OS
+            Product Support
           </a>
+
         </div>
+
       </section>
     </main>
   );
