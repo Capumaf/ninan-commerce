@@ -1,12 +1,45 @@
+/* app/globals.css */
+
 @import "tailwindcss";
 
-html {
+:root {
+  --background: #f3f4f6;
+  --foreground: #020617;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: #f3f4f6;
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* NEXT.JS SMOOTH SCROLL FIX */
+
+html[data-scroll-behavior="smooth"] {
   scroll-behavior: smooth;
 }
 
-body {
-  
-  margin: 0;
-  background: #f6f9fc;
-  color: #0f172a;
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+::selection {
+  background: rgba(29, 79, 143, 0.12);
 }
