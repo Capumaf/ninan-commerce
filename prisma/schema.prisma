@@ -1,0 +1,161 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ProductStatus {
+  RESEARCHING
+  SAMPLING
+  APPROVED
+  REJECTED
+  ACTIVE
+  DISCONTINUED
+}
+
+enum Incoterm {
+  FOB
+  EXW
+  DDP
+  CIF
+  DAP
+  FCA
+}
+
+enum SupplierStatus {
+  CONTACTED
+  SAMPLING
+  NEGOTIATING
+  APPROVED
+  REJECTED
+  BACKUP
+}
+
+model Product {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name         String
+  slug         String        @unique
+  category     String?
+  status       ProductStatus @default(RESEARCHING)
+  referenceUrl String?
+  imageUrl     String?
+
+  asin      String?
+  amazonUrl String?
+
+  material    String?
+  color       String?
+  useCase     String?
+  lengthCm    Float?
+  widthCm     Float?
+  heightCm    Float?
+  weightGrams Float?
+
+  notes String?
+
+  suppliers   Supplier[]
+  amazonCosts AmazonCostOperation[]
+  inventory   Inventory?
+}
+
+model Supplier {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  supplierName   String
+  contactName    String?
+  contactEmail   String?
+  sourceUrl      String?
+  sourcePlatform String?
+  country        String?
+
+  incoterm     Incoterm?
+  unitPrice    Float?
+  currency     String?   @default("USD")
+  moq          Int?
+  leadTimeDays Int?
+
+  unitsPerCarton Int?
+  cartonLengthCm Float?
+  cartonWidthCm  Float?
+  cartonHeightCm Float?
+  cartonWeightKg Float?
+
+  sampleNotes      String?
+  qualityNotes     String?
+  negotiationNotes String?
+  generalNotes     String?
+
+  status SupplierStatus @default(CONTACTED)
+}
+
+model AmazonCostOperation {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  label String? @default("Base Estimate")
+
+  referralFeeUsd         Float?
+  fbaFeeUsd              Float?
+  returnProcessingFeeUsd Float?
+
+  targetAcosPct     Float?
+  estimatedCpc      Float?
+  estimatedCvr      Float?
+  ppcCostPerUnitUsd Float?
+
+  freightPerUnitUsd   Float?
+  customsBrokerFeeUsd Float?
+  isfFilingFeeUsd     Float?
+  drayagePerUnitUsd   Float?
+  cargoInsuranceUsd   Float?
+
+  dutiesUsd   Float?
+  dutyRatePct Float?
+
+  prepCostUsd     Float?
+  labelingCostUsd Float?
+  inspectionUsd   Float?
+
+  monthlyStorageUsd  Float?
+  longtermStorageUsd Float?
+
+  sampleCostUsd  Float?
+  photographyUsd Float?
+
+  miscCostUsd Float?
+
+  notes String?
+}
+
+model Inventory {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  productId String  @unique
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  unitsInFBA     Int @default(0)
+  unitsInTransit Int @default(0)
+  unitsSold      Int @default(0)
+  unitsReserved  Int @default(0)
+
+  lastShipmentDate DateTime?
+  reorderPoint     Int @default(50)
+  notes            String?
+}
