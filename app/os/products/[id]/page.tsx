@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import UpdateStatusForm from "@/components/UpdateStatusForm";
+import UpdateSellingPriceForm from "@/components/UpdateSellingPriceForm";
 
 export default async function ProductDetailPage({
   params,
@@ -72,6 +73,11 @@ export default async function ProductDetailPage({
         productId={product.id}
         currentStatus={product.status}
       />
+
+      <UpdateSellingPriceForm
+  productId={product.id}
+  currentSellingPriceUsd={product.sellingPriceUsd}
+/>
 
       <Link
         href={`/os/products/${product.id}/suppliers`}

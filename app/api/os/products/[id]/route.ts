@@ -7,9 +7,18 @@ export async function PATCH(
 ) {
   const { id } = await params;
   const body = await req.json();
+
   const product = await prisma.product.update({
     where: { id },
-    data: { status: body.status },
+    data: {
+      ...(body.status !== undefined && {
+        status: body.status,
+      }),
+      ...(body.sellingPriceUsd !== undefined && {
+        sellingPriceUsd: body.sellingPriceUsd,
+      }),
+    },
   });
+
   return NextResponse.json(product);
 }
