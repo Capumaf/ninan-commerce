@@ -1,6 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
+import BackButton from "@/components/BackButton";
+
 
 const STATUS_OPTIONS = [
   { value: "READY_TO_SHIP", label: "Ready to Ship" },
@@ -65,7 +67,9 @@ export default function ShipmentDetailPage() {
   const labelStyle = { fontSize: 11, fontFamily: "'DM Mono', monospace", textTransform: "uppercase" as const, letterSpacing: "0.06em", color: "#475569", display: "block" as const, marginBottom: 6 };
 
   return (
-    <div style={{ padding: 40, maxWidth: 800 }}>
+    <div className="p-4 md:p-10 w-full max-w-4xl">
+        <BackButton />
+        
       <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, letterSpacing: "0.06em", textTransform: "uppercase" as const, color: "#3b82c4", marginBottom: 8 }}>
         Shipments · Detail
       </p>

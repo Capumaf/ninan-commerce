@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import BackButton from "@/components/BackButton";
 
 export default async function OSPage() {
   const products = await prisma.product.findMany();

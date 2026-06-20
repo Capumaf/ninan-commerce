@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import UpdateStatusForm from "@/components/UpdateStatusForm";
 import UpdateSellingPriceForm from "@/components/UpdateSellingPriceForm";
+import BackButton from "@/components/BackButton";
 
 export default async function ProductDetailPage({
   params,
@@ -17,17 +18,18 @@ export default async function ProductDetailPage({
   if (!product) notFound();
 
   return (
-    <div className="p-10 max-w-2xl">
+       <div className="p-4 md:p-10 w-full max-w-4xl">
+          <BackButton />
       <p className="text-xs uppercase tracking-widest text-blue-400 font-mono mb-2">
         Commerce OS · Products · {product.slug}
       </p>
 
-      <h1 className="text-3xl font-light text-white tracking-tight mb-8">
+      <h1 className="text-2xl md:text-3xl font-light text-white tracking-tight mb-8">
         {product.name}
       </h1>
 
       <div className="flex flex-col gap-4">
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {[
             { label: "ASIN", value: product.asin },
             { label: "Category", value: product.category },
@@ -74,14 +76,21 @@ export default async function ProductDetailPage({
         currentStatus={product.status}
       />
 
-      <UpdateSellingPriceForm
+   <UpdateSellingPriceForm
   productId={product.id}
   currentSellingPriceUsd={product.sellingPriceUsd}
 />
 
       <Link
         href={`/os/products/${product.id}/suppliers`}
-          style={{ marginTop: 24, display: "inline-block", fontSize: 13, color: "#60a5fa", textDecoration: "none" }}
+          style={{
+  marginTop: 24,
+  display: "inline-block",
+  fontSize: 13,
+  color: "#60a5fa",
+  textDecoration: "none",
+  width: "fit-content",
+}}
       >
         View Suppliers →
       </Link>

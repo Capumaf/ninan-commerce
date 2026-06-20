@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
+import BackButton from "@/components/BackButton";
 
 const STATUS_OPTIONS = ["ENABLED", "PAUSED", "ARCHIVED"];
 const MATCH_TYPES = ["BROAD", "PHRASE", "EXACT"];
@@ -104,7 +105,8 @@ export default function CampaignDetailPage() {
   const acos = calcAcos(totalSpend, totalSales);
 
   return (
-    <div style={{ padding: 40, maxWidth: 900 }}>
+     <div className="p-4 md:p-10 w-full max-w-6xl">
+       <BackButton />
       <p style={{ fontFamily: "'DM Mono', monospace", fontSize: 11, letterSpacing: "0.06em", textTransform: "uppercase" as const, color: "#3b82c4", marginBottom: 8 }}>
         PPC · {campaign.name}
       </p>
@@ -112,7 +114,8 @@ export default function CampaignDetailPage() {
         {campaign.name}
       </h1>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 12, marginBottom: 32 }}>
+      <div
+  style={{display: "grid",gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))",gap: 12, marginBottom: 32, }}>
         {[
           { label: "Spend", value: `$${totalSpend.toFixed(2)}`, color: "#f59e0b" },
           { label: "Sales", value: `$${totalSales.toFixed(2)}`, color: "#22c55e" },
@@ -160,7 +163,7 @@ export default function CampaignDetailPage() {
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                   {ag.keywords?.map((kw: any, kwIndex: number) => (
-                    <div key={kw.id || kwIndex} style={{ display: "grid", gridTemplateColumns: "1fr 100px 90px 90px 32px", gap: 6 }}>
+                    <div key={kw.id || kwIndex} style={{ display: "grid", gridTemplateColumns: "1fr", gap: 6 }}>
                       <input type="text" placeholder="keyword" value={kw.text} onChange={(e) => updateKeyword(agIndex, kwIndex, "text", e.target.value)} style={{ ...inputStyle, fontSize: 12, padding: "8px 12px" }} />
                       <select value={kw.matchType} onChange={(e) => updateKeyword(agIndex, kwIndex, "matchType", e.target.value)} style={{ ...inputStyle, fontSize: 12, padding: "8px 12px", cursor: "pointer" }}>
                         {MATCH_TYPES.map((o) => <option key={o} value={o}>{o}</option>)}
