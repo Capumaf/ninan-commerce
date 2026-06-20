@@ -35,7 +35,7 @@ export async function GET(req: NextRequest) {
   `;
 
   await resend.emails.send({
-    from: "onboarding@resend.dev",
+    from: "alerts@ninancommerce.com",
     to: process.env.ALERT_EMAIL_TO!,
     subject: `⚠ NINAN Commerce OS — ${alerts.length} alerta(s)`,
     html,
