@@ -11,13 +11,13 @@ export default function Button({
 }: ButtonProps) {
   const styles =
     variant === "primary"
-      ? "bg-[#1d4f8f] text-white hover:bg-[#163b6b] shadow-blue-900/10"
+      ? "bg-white text-slate-900 border border-slate-300 hover:border-slate-400 shadow-sm"
       : "bg-white text-slate-900 border border-slate-200 hover:border-blue-300";
 
   return (
     <a
       href={href}
-      className={`inline-flex items-center justify-center rounded-full px-7 py-4 text-sm font-semibold shadow-lg transition ${styles}`}
+      className={`inline-flex items-center justify-center rounded-full px-7 py-4 text-sm font-semibold transition ${styles}`}
     >
       {children}
     </a>

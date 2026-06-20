@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import UpdateStatusForm from "@/components/UpdateStatusForm";
 import UpdateSellingPriceForm from "@/components/UpdateSellingPriceForm";
+import UpdateNameForm from "@/components/UpdateNameForm";
 import BackButton from "@/components/BackButton";
 
 export default async function ProductDetailPage({
@@ -49,7 +50,9 @@ export default async function ProductDetailPage({
         </div>
 
         {product.referenceUrl && (
-          <a
+
+        <a
+          
             href={product.referenceUrl}
             target="_blank"
             rel="noopener noreferrer"
@@ -70,6 +73,11 @@ export default async function ProductDetailPage({
           </div>
         )}
       </div>
+
+      <UpdateNameForm
+        productId={product.id}
+        currentName={product.name}
+      />
 
       <UpdateStatusForm
         productId={product.id}

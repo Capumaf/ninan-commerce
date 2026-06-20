@@ -1,6 +1,12 @@
 import Link from "next/link";
+import { prisma } from "@/lib/prisma";
 
-export default function ProductsPage() {
+export default async function ProductsPage() {
+  const products = await prisma.product.findMany({
+    where: { status: "ACTIVE" },
+    orderBy: { createdAt: "desc" },
+  });
+
   return (
     <main className="min-h-screen overflow-hidden bg-[#f6f9fc] text-slate-950">
       <header className="mx-auto flex w-full max-w-6xl items-center justify-between px-5 py-6 md:px-8">
@@ -27,44 +33,55 @@ export default function ProductsPage() {
           Setup guidance, onboarding resources, and product information.
         </p>
 
-        <div className="mt-12 grid max-w-md gap-5">
-          <Link
-            href="/products/dv180"
-            className="group rounded-[2rem] border border-slate-200 bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:border-blue-300 hover:shadow-[0_18px_50px_rgba(29,79,143,0.1)] md:p-7"
-          >
-            <div className="mb-8 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#eef6ff]">
-              <svg
-                viewBox="0 0 64 64"
-                className="h-8 w-8 text-[#1d4f8f] transition-transform duration-300 group-hover:scale-110"
-                fill="none"
-              >
-                <circle cx="32" cy="32" r="19" stroke="currentColor" strokeWidth="3" />
-                <circle cx="32" cy="32" r="10" stroke="currentColor" strokeWidth="3" />
-                <path d="M45 20l7-7" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-              </svg>
-            </div>
+        <div
+          className={`mt-12 grid gap-5 ${
+            products.length === 1 ? "max-w-md" : "md:grid-cols-2"
+          }`}
+        >
+          {products.map((product) => (
+            <Link
+              key={product.id}
+              href={`/products/${product.slug}`}
+              className="group rounded-[2rem] border border-slate-200 bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:border-blue-300 hover:shadow-[0_18px_50px_rgba(29,79,143,0.1)] md:p-7"
+            >
+              <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#eef6ff]">
+                <svg
+                  viewBox="0 0 64 64"
+                  className="h-8 w-8 text-[#1d4f8f] transition-transform duration-300 group-hover:scale-110"
+                  fill="none"
+                >
+                  <circle cx="32" cy="32" r="19" stroke="currentColor" strokeWidth="3" />
+                  <circle cx="32" cy="32" r="10" stroke="currentColor" strokeWidth="3" />
+                  <path d="M45 20l7-7" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+                </svg>
+              </div>
 
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#1d4f8f]">
-              DV180
-            </p>
+              {product.sellingPriceUsd && (
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#1d4f8f]">
+                  ${product.sellingPriceUsd.toFixed(2)}
+                </p>
+              )}
 
-            <h2 className="mt-3 text-2xl font-semibold tracking-tight text-slate-950 md:text-3xl">
-              Magnetic Dryer Vent Connector Kit
-            </h2>
+              <h2 className="mt-3 text-2xl font-semibold tracking-tight text-slate-950 md:text-3xl">
+                {product.name.trim()}
+              </h2>
 
-            <p className="mt-4 max-w-md text-sm leading-7 text-slate-600">
-              Installation guidance and product support.
-            </p>
-
-            <div className="mt-8 text-sm font-semibold text-slate-900">
-              <span className="inline-flex items-center gap-2">
-                Open Guide
-                <span className="transition-transform duration-300 group-hover:translate-x-1">
-                  →
+              <div className="mt-8 text-sm font-semibold text-slate-900">
+                <span className="inline-flex items-center gap-2">
+                  Open Guide
+                  <span className="transition-transform duration-300 group-hover:translate-x-1">
+                    →
+                  </span>
                 </span>
-              </span>
-            </div>
-          </Link>
+              </div>
+            </Link>
+          ))}
+
+          {products.length === 0 && (
+            <p className="text-sm text-slate-500">
+              No active products yet.
+            </p>
+          )}
         </div>
       </section>
     </main>
