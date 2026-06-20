@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 
 async function main() {
   const email = "cesar@ninancommerce.com";
-  const plainPassword = "Albetito12.";
+  const plainPassword = "Amazon12345.";
 
   const hashedPassword = await bcrypt.hash(plainPassword, 10);
 
