@@ -29,7 +29,7 @@ export default function ProductsPage() {
 
         <div className="mt-12 grid gap-5 md:mt-16 md:grid-cols-2">
           <Link
-            href="/dv180"
+            href="/products/dv180"
             className="group rounded-[2rem] border border-slate-200 bg-white p-6 shadow-[0_10px_30px_rgba(15,23,42,0.06)] transition-all duration-300 hover:-translate-y-1 hover:border-blue-300 hover:shadow-[0_18px_50px_rgba(29,79,143,0.12)] md:p-7"
           >
             <div className="mb-8 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#eef6ff]">

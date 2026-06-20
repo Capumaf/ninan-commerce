@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { signOut } from "next-auth/react";
 
 export default function UserMenu({
@@ -22,9 +23,24 @@ export default function UserMenu({
         fontSize: 12,
       }}
     >
+      <Link
+        href="/"
+        style={{
+          color: "#3b82c4",
+          textDecoration: "none",
+          padding: "4px 10px",
+          border: "1px solid rgba(59,130,196,0.3)",
+          borderRadius: 6,
+          fontSize: 11,
+        }}
+      >
+        ← Home
+      </Link>
+
       <span style={{ color: "#94a3b8" }}>
         {name || email}
       </span>
+
       <button
         onClick={() => signOut({ callbackUrl: "/login" })}
         style={{

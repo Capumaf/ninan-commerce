@@ -1,5 +1,5 @@
-import Button from "../../components/Button";
-import Section from "../../components/Section";
+import Button from "@/components/Button";
+import Section from "@/components/Section";
 
 const included = [
   "Dryer vent adapter x1",
