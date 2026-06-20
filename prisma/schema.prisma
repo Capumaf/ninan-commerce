@@ -287,3 +287,12 @@ enum KeywordStatus {
   PAUSED
   ARCHIVED
 }
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String?
+  role      String   @default("admin")
+  createdAt DateTime @default(now())
+}
