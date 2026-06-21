@@ -33,6 +33,7 @@ model Product {
   suppliers    Supplier[]
   campaigns   Campaign[]
   sellingPriceUsd Float?
+  expenses     Expense[]
 }
 
 model Supplier {
@@ -295,4 +296,30 @@ model User {
   name      String?
   role      String   @default("admin")
   createdAt DateTime @default(now())
+}
+
+model Expense {
+  id          String          @id @default(cuid())
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  productId   String?
+  product     Product?        @relation(fields: [productId], references: [id], onDelete: SetNull)
+  category    ExpenseCategory
+  description String
+  amountUsd   Float
+  date        DateTime        @default(now())
+  isRecurring Boolean         @default(false)
+  notes       String?
+}
+
+enum ExpenseCategory {
+  LLC_LEGAL
+  SOFTWARE_TOOLS
+  SOURCING_SAMPLES
+  SHIPPING_LOGISTICS
+  PACKAGING_DESIGN
+  PHOTOGRAPHY
+  PPC_ADS
+  AMAZON_FEES
+  MISC
 }

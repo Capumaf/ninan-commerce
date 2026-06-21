@@ -77,6 +77,33 @@ export default async function InventoryPage() {
                 >
                   {p.slug}
                 </p>
+                {(p.inventory?.unitsInFBA ?? 0) <= (p.inventory?.reorderPoint ?? 50) && (
+               <span
+               style={{
+               display: "inline-block",
+               marginTop: 6,
+               fontSize: 10,
+               fontFamily: "'DM Mono', monospace",
+               textTransform: "uppercase" as const,
+               letterSpacing: "0.06em",
+                color: (p.inventory?.unitsInTransit ?? 0) === 0 ? "#fca5a5" : "#fbbf24",
+               background:
+               (p.inventory?.unitsInTransit ?? 0) === 0
+               ? "rgba(239,68,68,0.1)"
+               : "rgba(251,191,36,0.1)",
+               border:
+               (p.inventory?.unitsInTransit ?? 0) === 0
+                 ? "1px solid rgba(239,68,68,0.2)"
+                : "1px solid rgba(251,191,36,0.2)",
+               borderRadius: 999,
+               padding: "3px 10px",
+               }}
+  >
+    {(p.inventory?.unitsInTransit ?? 0) === 0
+      ? "⚠ Reorder Now"
+      : "⚠ Low Stock"}
+  </span>
+)}
               </div>
 
               <Link

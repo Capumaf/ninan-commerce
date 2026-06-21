@@ -22,9 +22,7 @@ export type Alert = { type: string; message: string; color: string };
 
 export async function getAlerts(): Promise<Alert[]> {
   const products = await prisma.product.findMany({
-    include: {
-      inventory: true,
-      amazonCosts: true,
+    include: { inventory: true, amazonCosts: true,
       shipments: { include: { boxes: true } },
       campaigns: { include: { metrics: true } },
     },
@@ -37,19 +35,24 @@ export async function getAlerts(): Promise<Alert[]> {
     const totalSales = p.campaigns.reduce((s, c) => s + c.metrics.reduce((s2, m) => s2 + m.sales, 0), 0);
     const acos = calcAcos(totalSpend, totalSales);
 
-    const stockLow = p.inventory ? p.inventory.unitsInFBA <= p.inventory.reorderPoint : false;
+    const stockLow = p.inventory
+    ? p.inventory.unitsInFBA <= p.inventory.reorderPoint
+    : false;
+    const stockCritical = stockLow && (p.inventory?.unitsInTransit ?? 0) === 0;
     const acosHigh = acos !== null && acos > ACOS_ALERT_THRESHOLD;
     const shipmentMissingTracking = p.shipments.some((s) =>
       s.boxes.some((b) => !b.trackingId)
     );
 
     if (stockLow) {
-      alerts.push({
-        type: "stock",
-        message: `${p.name.trim()} — stock bajo: ${p.inventory?.unitsInFBA ?? 0} unidades en FBA (reorder: ${p.inventory?.reorderPoint})`,
-        color: "#f59e0b",
-      });
-    }
+     alerts.push({
+     type: "stock",
+      message: stockCritical
+      ? `${p.name.trim()} — SIN STOCK y sin envío en camino (${p.inventory?.unitsInFBA ?? 0} en FBA)`
+      : `${p.name.trim()} — stock bajo: ${p.inventory?.unitsInFBA ?? 0} unidades en FBA, ${p.inventory?.unitsInTransit ?? 0} en camino`,
+     color: stockCritical ? "#ef4444" : "#f59e0b",
+     });
+     }
     if (acosHigh) {
       alerts.push({
         type: "acos",

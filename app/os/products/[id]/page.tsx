@@ -50,9 +50,7 @@ export default async function ProductDetailPage({
         </div>
 
         {product.referenceUrl && (
-
         <a
-          
             href={product.referenceUrl}
             target="_blank"
             rel="noopener noreferrer"
@@ -102,6 +100,20 @@ export default async function ProductDetailPage({
       >
         View Suppliers →
       </Link>
+
+      <Link
+      href={`/os/products/${product.id}/costs`}
+      style={{
+      marginTop: 12,
+      display: "inline-block",
+      fontSize: 13,
+      color: "#60a5fa",
+      textDecoration: "none",
+      width: "fit-content",
+      }}
+     >
+  Edit Amazon Costs →
+</Link>
     </div>
   );
 }
