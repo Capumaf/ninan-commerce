@@ -19,6 +19,13 @@ export default function UpdateInventoryPage() {
     notes: "",
   });
 
+  const [warehouses, setWarehouses] = useState<
+  { id: string; warehouseCode: string; units: number }[]
+>([]);
+  const [showWarehouses, setShowWarehouses] = useState(false);
+  const [newCode, setNewCode] = useState("");
+  const [newUnits, setNewUnits] = useState(0);
+
   useEffect(() => {
     if (!productId) return;
 
@@ -37,6 +44,35 @@ export default function UpdateInventoryPage() {
         }
       });
   }, [productId]);
+
+  function loadWarehouses() {
+    fetch(`/api/os/inventory/${productId}/warehouses`)
+      .then((r) => r.json())
+      .then(setWarehouses);
+  }
+
+  useEffect(() => {
+    if (showWarehouses) loadWarehouses();
+  }, [showWarehouses]);
+
+  async function handleAddWarehouse() {
+    if (!newCode) return;
+    await fetch(`/api/os/inventory/${productId}/warehouses`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ warehouseCode: newCode, units: newUnits }),
+    });
+    setNewCode("");
+    setNewUnits(0);
+    loadWarehouses();
+  }
+
+  async function handleDeleteWarehouse(warehouseId: string) {
+    await fetch(`/api/os/inventory/warehouses/${warehouseId}`, {
+      method: "DELETE",
+    });
+    loadWarehouses();
+  }
 
   async function handleSave() {
     setLoading(true);
@@ -156,6 +192,134 @@ export default function UpdateInventoryPage() {
               resize: "none",
             }}
           />
+        </div>
+
+        <div
+          style={{
+            border: "1px solid rgba(255,255,255,0.1)",
+            borderRadius: 10,
+            padding: 16,
+          }}
+        >
+          <button
+            onClick={() => setShowWarehouses(!showWarehouses)}
+            style={{
+              background: "none",
+              border: "none",
+              color: "#60a5fa",
+              fontSize: 13,
+              cursor: "pointer",
+              padding: 0,
+              display: "flex",
+              alignItems: "center",
+              gap: 6,
+            }}
+          >
+            {showWarehouses ? "▼" : "▶"} Warehouse Breakdown
+          </button>
+
+          {showWarehouses && (
+            <div
+              style={{
+                marginTop: 16,
+                display: "flex",
+                flexDirection: "column",
+                gap: 12,
+              }}
+            >
+              {warehouses.map((w) => (
+                <div
+                  key={w.id}
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    background: "#0a1220",
+                    padding: "10px 14px",
+                    borderRadius: 8,
+                  }}
+                >
+                  <span
+                    style={{
+                      fontSize: 13,
+                      color: "#e2e8f0",
+                      fontFamily: "'DM Mono', monospace",
+                    }}
+                  >
+                    {w.warehouseCode}
+                  </span>
+                  <div
+                    style={{ display: "flex", alignItems: "center", gap: 12 }}
+                  >
+                    <span style={{ fontSize: 14, color: "#22c55e" }}>
+                      {w.units} units
+                    </span>
+                    <button
+                      onClick={() => handleDeleteWarehouse(w.id)}
+                      style={{
+                        background: "none",
+                        border: "none",
+                        color: "#fca5a5",
+                        fontSize: 12,
+                        cursor: "pointer",
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              ))}
+
+              <div style={{ display: "flex", gap: 8 }}>
+                <input
+                  type="text"
+                  placeholder="Warehouse code (ej. ONT8)"
+                  value={newCode}
+                  onChange={(e) => setNewCode(e.target.value)}
+                  style={{
+                    flex: 1,
+                    background: "#0a1220",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    borderRadius: 8,
+                    padding: "8px 12px",
+                    fontSize: 13,
+                    color: "#fff",
+                  }}
+                />
+                <input
+                  type="number"
+                  placeholder="Units"
+                  value={newUnits}
+                  onChange={(e) =>
+                    setNewUnits(parseInt(e.target.value) || 0)
+                  }
+                  style={{
+                    width: 100,
+                    background: "#0a1220",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    borderRadius: 8,
+                    padding: "8px 12px",
+                    fontSize: 13,
+                    color: "#fff",
+                  }}
+                />
+                <button
+                  onClick={handleAddWarehouse}
+                  style={{
+                    background: "linear-gradient(135deg, #1a3356, #2563a8)",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: 8,
+                    padding: "8px 16px",
+                    fontSize: 13,
+                    cursor: "pointer",
+                  }}
+                >
+                  + Add
+                </button>
+              </div>
+            </div>
+          )}
         </div>
 
         <button

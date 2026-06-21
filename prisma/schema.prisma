@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
 }
 
 datasource db {
@@ -110,7 +110,9 @@ model Inventory {
   reorderPoint     Int       @default(50)
   notes            String?
   product          Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  warehouses       WarehouseStock[]
 }
+
 
 model Shipment {
   id            String         @id @default(cuid())
@@ -322,4 +324,15 @@ enum ExpenseCategory {
   PPC_ADS
   AMAZON_FEES
   MISC
+}
+
+
+model WarehouseStock {
+  id          String    @id @default(cuid())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  inventoryId String
+  inventory   Inventory @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
+  warehouseCode String
+  units       Int       @default(0)
 }

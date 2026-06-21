@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import ExpenseRow from "./ExpenseRow";
 import ExpenseChart from "./ExpenseChart";
+import ExpenseTimeline from "./ExpenseTimeline";
 
 export default async function FinancePage() {
   const products = await prisma.product.findMany({
@@ -33,6 +34,36 @@ export default async function FinancePage() {
     }
     return acc;
   }, [] as { category: string; amount: number }[]);
+
+  const expensesByMonth = expenses.reduce((acc, e) => {
+  const monthKey = new Date(e.date).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+  });
+  const existing = acc.find((item) => item.month === monthKey);
+  if (existing) {
+    existing.amount += e.amountUsd;
+  } else {
+    acc.push({ month: monthKey, amount: e.amountUsd });
+  }
+  return acc;
+}, [] as { month: string; amount: number }[]);
+
+expensesByMonth.sort(
+  (a, b) => new Date(a.month).getTime() - new Date(b.month).getTime()
+);
+
+const expensesByProduct = expenses.reduce((acc, e) => {
+  const productName = e.product?.name ?? "General";
+  const existing = acc.find((item) => item.category === productName);
+  if (existing) {
+    existing.amount += e.amountUsd;
+  } else {
+    acc.push({ category: productName, amount: e.amountUsd });
+  }
+  return acc;
+}, [] as { category: string; amount: number }[]);
+
 
   const csvRows = [
     ["Date", "Description", "Category", "Product", "Amount USD"],
@@ -117,6 +148,8 @@ export default async function FinancePage() {
       </div>
 
       <ExpenseChart data={expensesByCategory} />
+      <ExpenseTimeline data={expensesByMonth} />
+      <ExpenseChart data={expensesByProduct} title="Spending by Product" />
 
       <h2 className="text-sm font-mono text-slate-500 uppercase tracking-widest mb-3">
         By Product
@@ -196,6 +229,18 @@ const profitPerUnit =
                       )}
                     </>
                   )}
+
+                  {profitPerUnit !== null && (
+                  <>
+                  {" "}
+                  · Profit/unit:{" "}
+                  <span style={{ color: profitPerUnit >= 0 ? "#86efac" : "#fca5a5" }}>
+                   ${profitPerUnit.toFixed(2)}
+                    </span>
+                    </>
+                     )}
+
+
                 </p>
               </div>
               <span
