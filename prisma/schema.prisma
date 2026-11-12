@@ -336,3 +336,57 @@ model WarehouseStock {
   warehouseCode String
   units       Int       @default(0)
 }
+// Monthly figures copied from Seller Central → Payments → Financial overview.
+// Fees are stored as positive numbers (amounts charged by Amazon).
+model AmazonMonthlyStatement {
+  id                 String   @id @default(cuid())
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  month              DateTime @unique // first day of the month (UTC)
+  isPartial          Boolean  @default(false) // month-to-date figures
+  salesUsd           Float    @default(0)
+  unitsSold          Int?
+  promoRebatesUsd    Float    @default(0)
+  shippingCreditsUsd Float    @default(0)
+  fbaFeesUsd         Float    @default(0)
+  subscriptionUsd    Float    @default(0)
+  amazonFeesUsd      Float    @default(0)
+  couponFeesUsd      Float    @default(0)
+  debtRecoveryUsd    Float    @default(0) // charged to the card to cover a negative balance
+  notes              String?
+}
+
+model Trademark {
+  id            String           @id @default(cuid())
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  mark          String
+  status        TrademarkStatus  @default(FILED)
+  attorney      String?
+  serialNumber  String?
+  filedAt       DateTime?
+  nextAction    String?
+  nextActionDue DateTime?
+  notes         String?
+  events        TrademarkEvent[]
+}
+
+model TrademarkEvent {
+  id          String    @id @default(cuid())
+  createdAt   DateTime  @default(now())
+  trademarkId String
+  trademark   Trademark @relation(fields: [trademarkId], references: [id], onDelete: Cascade)
+  date        DateTime
+  title       String
+  notes       String?
+}
+
+enum TrademarkStatus {
+  PREPARING
+  FILED
+  SPECIMEN_REQUESTED
+  OFFICE_ACTION
+  PUBLISHED
+  REGISTERED
+  ABANDONED
+}

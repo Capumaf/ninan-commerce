@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
+import { summarizeStatements } from "@/lib/amazonStatements";
 
 export default async function OSPage() {
   const products = await prisma.product.findMany({
@@ -7,13 +8,21 @@ export default async function OSPage() {
   });
 
   const expenses = await prisma.expense.findMany();
+  const statements = await prisma.amazonMonthlyStatement.findMany();
+  const amazon = summarizeStatements(statements);
 
-  const totalInvested = expenses.reduce((sum, e) => sum + e.amountUsd, 0);
-  const totalRevenue = products.reduce(
-    (sum, p) =>
-      sum + (p.sellingPriceUsd ?? 0) * (p.inventory?.unitsSold ?? 0),
-    0
-  );
+  // Amazon fees count as money put into the business; revenue comes from the
+  // real Amazon statements once any exist (falls back to price × units sold).
+  const totalInvested =
+    expenses.reduce((sum, e) => sum + e.amountUsd, 0) + amazon.fees;
+  const totalRevenue =
+    statements.length > 0
+      ? amazon.sales
+      : products.reduce(
+          (sum, p) =>
+            sum + (p.sellingPriceUsd ?? 0) * (p.inventory?.unitsSold ?? 0),
+          0
+        );
   const overallRoi =
     totalInvested > 0
       ? ((totalRevenue - totalInvested) / totalInvested) * 100
