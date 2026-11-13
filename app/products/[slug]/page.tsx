@@ -173,9 +173,20 @@ export default async function ProductPage({
                   key={item}
                   className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-[2px] hover:border-slate-300 hover:shadow-md"
                 >
-                  <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-100">
-                    <ComponentIcon item={item} />
-                  </div>
+                  {guide.includedImages?.[item] ? (
+                    <Image
+                      src={guide.includedImages[item]}
+                      alt={item}
+                      width={800}
+                      height={600}
+                      sizes="(min-width: 1024px) 340px, (min-width: 640px) 50vw, 100vw"
+                      className="mb-5 h-auto w-full rounded-2xl"
+                    />
+                  ) : (
+                    <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-100">
+                      <ComponentIcon item={item} />
+                    </div>
+                  )}
                   <p className="text-base font-semibold tracking-tight text-slate-950">
                     {item}
                   </p>

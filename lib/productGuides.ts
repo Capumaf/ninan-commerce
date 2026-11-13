@@ -6,6 +6,8 @@ export interface ProductGuide {
   safetyNotes: string[];
   // Listing images (same set as the Amazon listing), served from /public.
   gallery?: { src: string; alt: string; width: number; height: number }[];
+  // Photo for each "included" item (800x600), keyed by the item text.
+  includedImages?: Record<string, string>;
 }
 
 export const productGuides: Record<string, ProductGuide> = {
@@ -42,6 +44,14 @@ export const productGuides: Record<string, ProductGuide> = {
         height: 1400,
       },
     ],
+    includedImages: {
+      "Dryer vent adapter x1": "/images/dv180/parts/adapter.webp",
+      "Wall assembly x1": "/images/dv180/parts/wall-plate.webp",
+      "Vent hose x1": "/images/dv180/parts/hose.webp",
+      "Hose clamps x2": "/images/dv180/parts/clamps.webp",
+      "Wall anchors x4": "/images/dv180/parts/anchors.webp",
+      "Screws x4": "/images/dv180/parts/screws.webp",
+    },
     included: [
       "Dryer vent adapter x1",
       "Wall assembly x1",
