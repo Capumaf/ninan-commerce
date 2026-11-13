@@ -137,11 +137,11 @@ export default async function ProductPage({
           <Image
             src={product.imageUrl}
             alt={`${product.name.trim()}: everything included in the kit`}
-            width={1400}
-            height={788}
+            width={1200}
+            height={605}
             priority
-            sizes="(min-width: 1152px) 1088px, 100vw"
-            className="mt-12 h-auto w-full rounded-[2rem] border border-slate-200 bg-white shadow-sm"
+            sizes="(min-width: 768px) 448px, 80vw"
+            className="mx-auto mt-12 h-auto w-full max-w-[26rem]"
           />
         )}
       </section>
@@ -150,17 +150,24 @@ export default async function ProductPage({
         <>
           {guide.gallery && guide.gallery.length > 0 && (
             <Section eyebrow="How It Works" title="See the magnetic connector in action">
-              <div className="grid gap-4 sm:grid-cols-2">
+              <div className="mx-auto grid max-w-3xl gap-12 sm:grid-cols-2">
                 {guide.gallery.map((img) => (
-                  <Image
-                    key={img.src}
-                    src={img.src}
-                    alt={img.alt}
-                    width={img.width}
-                    height={img.height}
-                    sizes="(min-width: 640px) 50vw, 100vw"
-                    className="h-auto w-full rounded-[2rem] border border-slate-200 bg-white shadow-sm"
-                  />
+                  <div key={img.src} className="flex flex-col items-center text-center">
+                    <Image
+                      src={img.src}
+                      alt={img.alt}
+                      width={img.width}
+                      height={img.height}
+                      sizes="(min-width: 640px) 256px, 70vw"
+                      className="h-auto w-full max-w-[16rem] rounded-2xl shadow-sm"
+                    />
+                    <h3 className="mt-5 text-lg font-semibold tracking-tight text-slate-950">
+                      {img.title}
+                    </h3>
+                    <p className="mt-2 max-w-xs text-sm leading-6 text-slate-600">
+                      {img.text}
+                    </p>
+                  </div>
                 ))}
               </div>
             </Section>
