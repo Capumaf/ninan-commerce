@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { productGuides } from "@/lib/productGuides";
 import Button from "@/components/Button";
 import Section from "@/components/Section";
+import Reveal from "@/components/Reveal";
 
 function ComponentIcon({ item }: { item: string }) {
   const iconClass = "h-8 w-8 text-[#1d4f8f]";
@@ -98,25 +99,33 @@ export default async function ProductPage({
       <section className="mx-auto flex w-full max-w-6xl flex-col justify-center px-5 py-12 md:px-8 md:py-20">
         <Link
           href="/products"
-          className="mb-10 inline-flex w-fit items-center gap-1.5 text-xs font-medium text-slate-400 transition hover:text-slate-700"
+          className="fade-up mb-10 inline-flex w-fit items-center gap-1.5 text-xs font-medium text-slate-400 transition hover:-translate-x-0.5 hover:text-slate-700"
         >
           ← Back to products
         </Link>
 
-        <p className="mb-6 text-xs font-semibold uppercase tracking-[0.28em] text-[#1d4f8f]">
-  DV180
-</p>
+        <p
+          className="fade-up mb-6 text-xs font-semibold uppercase tracking-[0.28em] text-[#1d4f8f]"
+          style={{ animationDelay: "60ms" }}
+        >
+          DV180
+        </p>
 
-        <h1 className="max-w-4xl text-4xl font-semibold leading-[0.95] tracking-[-0.04em] md:text-6xl">
+        <h1
+          style={{ animationDelay: "120ms" }}
+          className="fade-up max-w-4xl text-4xl font-semibold leading-[0.95] tracking-[-0.04em] md:text-6xl">
           {product.name.trim()}
         </h1>
 
-        <p className="mt-6 max-w-2xl text-base leading-7 text-slate-600">
+        <p
+          className="fade-up mt-6 max-w-2xl text-base leading-7 text-slate-600"
+          style={{ animationDelay: "200ms" }}
+        >
           Installation guidance and setup instructions for your{" "}
           {product.name.trim()}.
         </p>
 
-        <div className="mt-8 flex flex-wrap gap-4">
+        <div className="fade-up mt-8 flex flex-wrap gap-4" style={{ animationDelay: "280ms" }}>
           {product.amazonUrl && (
 
             <a
@@ -124,7 +133,7 @@ export default async function ProductPage({
               href={product.amazonUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-[#ff9900] px-7 py-4 text-sm font-semibold text-slate-950 shadow-lg shadow-orange-900/10 transition hover:bg-[#e88a00]"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-[#ff9900] px-7 py-4 text-sm font-semibold text-slate-950 shadow-lg shadow-orange-900/10 transition duration-300 hover:-translate-y-0.5 hover:bg-[#e88a00]"
             >
               Buy on Amazon →
             </a>
@@ -141,7 +150,8 @@ export default async function ProductPage({
             height={605}
             priority
             sizes="(min-width: 768px) 448px, 80vw"
-            className="mx-auto mt-12 h-auto w-full max-w-[26rem]"
+            className="fade-up mx-auto mt-12 h-auto w-full max-w-[26rem]"
+            style={{ animationDelay: "380ms" }}
           />
         )}
       </section>
@@ -151,15 +161,15 @@ export default async function ProductPage({
           {guide.gallery && guide.gallery.length > 0 && (
             <Section eyebrow="How It Works" title="See the magnetic connector in action">
               <div className="mx-auto grid max-w-3xl gap-12 sm:grid-cols-2">
-                {guide.gallery.map((img) => (
-                  <div key={img.src} className="flex flex-col items-center text-center">
+                {guide.gallery.map((img, i) => (
+                  <Reveal key={img.src} delay={(i % 2) * 120} className="flex flex-col items-center text-center">
                     <Image
                       src={img.src}
                       alt={img.alt}
                       width={img.width}
                       height={img.height}
                       sizes="(min-width: 640px) 256px, 70vw"
-                      className="h-auto w-full max-w-[16rem] rounded-2xl shadow-sm"
+                      className="h-auto w-full max-w-[16rem] rounded-2xl shadow-sm transition duration-500 hover:-translate-y-1 hover:shadow-lg"
                     />
                     <h3 className="mt-5 text-lg font-semibold tracking-tight text-slate-950">
                       {img.title}
@@ -167,7 +177,7 @@ export default async function ProductPage({
                     <p className="mt-2 max-w-xs text-sm leading-6 text-slate-600">
                       {img.text}
                     </p>
-                  </div>
+                  </Reveal>
                 ))}
               </div>
             </Section>
@@ -175,10 +185,10 @@ export default async function ProductPage({
 
           <Section eyebrow="Included Components" title="What's included in your kit">
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {guide.included.map((item) => (
+              {guide.included.map((item, i) => (
+                <Reveal key={item} delay={(i % 3) * 90}>
                 <div
-                  key={item}
-                  className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-[2px] hover:border-slate-300 hover:shadow-md"
+                  className="h-full rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-slate-300 hover:shadow-md"
                 >
                   {guide.includedImages?.[item] ? (
                     <Image
@@ -198,16 +208,17 @@ export default async function ProductPage({
                     {item}
                   </p>
                 </div>
+                </Reveal>
               ))}
             </div>
           </Section>
 
           <Section eyebrow="Specifications" title="Product dimensions">
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {guide.specifications.map((item) => (
+              {guide.specifications.map((item, i) => (
+                <Reveal key={item.label} delay={i * 80}>
                 <div
-                  key={item.label}
-                  className="rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-sm"
+                  className="h-full rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-sm"
                 >
                   <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#1d4f8f]">
                     {item.label}
@@ -216,12 +227,13 @@ export default async function ProductPage({
                     {item.value}
                   </p>
                 </div>
+                </Reveal>
               ))}
             </div>
           </Section>
 
           <Section eyebrow="Before You Start" title="Tools and preparation">
-            <div className="grid gap-5 lg:grid-cols-[1fr_1.1fr]">
+            <Reveal className="grid gap-5 lg:grid-cols-[1fr_1.1fr]">
               <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
                 <h3 className="text-lg font-semibold tracking-tight text-slate-950">
                   Tools required
@@ -249,15 +261,15 @@ export default async function ProductPage({
                   may be needed.
                 </p>
               </div>
-            </div>
+            </Reveal>
           </Section>
 
-          <section id="installation">
+          <section id="installation" className="scroll-mt-6">
             <Section eyebrow="Installation Guide" title="Step-by-step setup">
               <div className="grid gap-4">
                 {guide.steps.map((step, index) => (
+                  <Reveal key={step.title}>
                   <div
-                    key={step.title}
                     className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm md:grid md:grid-cols-[70px_1fr] md:gap-8"
                   >
                     <p className="mb-4 text-sm font-semibold text-[#1d4f8f] md:mb-0">
@@ -272,6 +284,7 @@ export default async function ProductPage({
                       </p>
                     </div>
                   </div>
+                  </Reveal>
                 ))}
               </div>
             </Section>
@@ -280,12 +293,13 @@ export default async function ProductPage({
           <Section eyebrow="Safety Notes" title="Before installation">
             <div className="grid gap-4">
               {guide.safetyNotes.map((note, i) => (
+                <Reveal key={i}>
                 <div
-                  key={i}
                   className="rounded-[2rem] border border-slate-200 bg-white p-6 text-sm leading-7 text-slate-700 shadow-sm"
                 >
                   {note}
                 </div>
+                </Reveal>
               ))}
             </div>
           </Section>
@@ -293,7 +307,7 @@ export default async function ProductPage({
       )}
 
       <Section eyebrow="Customer Assistance" title="Need help with your guide?">
-        <div className="rounded-[2.5rem] bg-slate-950 p-8 text-white shadow-xl md:p-10">
+        <Reveal className="rounded-[2.5rem] bg-slate-950 p-8 text-white shadow-xl md:p-10">
           <p className="max-w-2xl text-sm leading-7 text-slate-300">
             For questions about setup, installation, or product use,
             contact NINAN Commerce assistance.
@@ -306,7 +320,7 @@ export default async function ProductPage({
               Contact Assistance
             </Link>
           </div>
-        </div>
+        </Reveal>
       </Section>
 
       <footer className="mt-10 border-t border-slate-200 px-5 py-10 text-sm text-slate-500">
