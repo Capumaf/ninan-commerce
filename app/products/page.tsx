@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 
@@ -44,6 +45,16 @@ export default async function ProductsPage() {
               href={`/products/${product.slug}`}
               className="group rounded-[2rem] border border-slate-200 bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:border-blue-300 hover:shadow-[0_18px_50px_rgba(29,79,143,0.1)] md:p-7"
             >
+              {product.imageUrl ? (
+                <Image
+                  src={product.imageUrl}
+                  alt={product.name.trim()}
+                  width={1400}
+                  height={788}
+                  sizes="(min-width: 768px) 448px, 100vw"
+                  className="mb-5 h-auto w-full rounded-2xl"
+                />
+              ) : (
               <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#eef6ff]">
                 <svg
                   viewBox="0 0 64 64"
@@ -55,6 +66,7 @@ export default async function ProductsPage() {
                   <path d="M45 20l7-7" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
                 </svg>
               </div>
+              )}
 
               {product.sellingPriceUsd && (
                 <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#1d4f8f]">

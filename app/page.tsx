@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 
@@ -42,6 +43,16 @@ export default function HomePage() {
               Product Support
             </Link>
           </div>
+
+          <Image
+            src="/images/dv180/main.webp"
+            alt="NINAN magnetic dryer vent connector kit: wall plate, magnetic adapter, flexible aluminum duct, hose clamps, screws and anchors"
+            width={1400}
+            height={788}
+            priority
+            sizes="(min-width: 1152px) 1088px, 100vw"
+            className="mt-14 h-auto w-full max-w-4xl rounded-[2rem] border border-slate-200 bg-white shadow-sm"
+          />
         </section>
 
         <Footer />
