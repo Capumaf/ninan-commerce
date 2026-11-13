@@ -31,8 +31,11 @@ export async function getAlerts(): Promise<Alert[]> {
   const alerts: Alert[] = [];
 
   products.forEach((p) => {
-    const totalSpend = p.campaigns.reduce((s, c) => s + c.metrics.reduce((s2, m) => s2 + m.spend, 0), 0);
-    const totalSales = p.campaigns.reduce((s, c) => s + c.metrics.reduce((s2, m) => s2 + m.sales, 0), 0);
+    // Only campaigns that are running: paused ones can't be fixed and
+    // would keep firing the ACOS alert every day.
+    const running = p.campaigns.filter((c) => c.status === "ENABLED");
+    const totalSpend = running.reduce((s, c) => s + c.metrics.reduce((s2, m) => s2 + m.spend, 0), 0);
+    const totalSales = running.reduce((s, c) => s + c.metrics.reduce((s2, m) => s2 + m.sales, 0), 0);
     const acos = calcAcos(totalSpend, totalSales);
 
     const stockLow = p.inventory
@@ -40,8 +43,11 @@ export async function getAlerts(): Promise<Alert[]> {
     : false;
     const stockCritical = stockLow && (p.inventory?.unitsInTransit ?? 0) === 0;
     const acosHigh = acos !== null && acos > ACOS_ALERT_THRESHOLD;
-    const shipmentMissingTracking = p.shipments.some((s) =>
-      s.boxes.some((b) => !b.trackingId)
+    // Only shipments still on their way; received/closed ones don't need tracking.
+    const shipmentMissingTracking = p.shipments.some(
+      (s) =>
+        (s.status === "READY_TO_SHIP" || s.status === "SHIPPED") &&
+        s.boxes.some((b) => !b.trackingId)
     );
 
     if (stockLow) {
