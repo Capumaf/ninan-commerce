@@ -3,6 +3,12 @@ import Link from "next/link";
 import ExpenseRow from "./ExpenseRow";
 import ExpenseChart from "./ExpenseChart";
 import ExpenseTimeline from "./ExpenseTimeline";
+import {
+  formatMonth,
+  statementFees,
+  statementNet,
+  summarizeStatements,
+} from "@/lib/amazonStatements";
 
 export default async function FinancePage() {
   const products = await prisma.product.findMany({
@@ -15,12 +21,21 @@ export default async function FinancePage() {
     orderBy: { date: "desc" },
   });
 
-  const totalInvested = expenses.reduce((sum, e) => sum + e.amountUsd, 0);
-  const totalRevenue = products.reduce(
-    (sum, p) =>
-      sum + (p.sellingPriceUsd ?? 0) * (p.inventory?.unitsSold ?? 0),
-    0
-  );
+  const statements = await prisma.amazonMonthlyStatement.findMany({
+    orderBy: { month: "asc" },
+  });
+  const amazon = summarizeStatements(statements);
+
+  const totalInvested =
+    expenses.reduce((sum, e) => sum + e.amountUsd, 0) + amazon.fees;
+  const totalRevenue =
+    statements.length > 0
+      ? amazon.sales
+      : products.reduce(
+          (sum, p) =>
+            sum + (p.sellingPriceUsd ?? 0) * (p.inventory?.unitsSold ?? 0),
+          0
+        );
   const overallProfit = totalRevenue - totalInvested;
   const overallRoi =
     totalInvested > 0 ? (overallProfit / totalInvested) * 100 : 0;
@@ -146,6 +161,87 @@ const expensesByProduct = expenses.reduce((acc, e) => {
           </p>
         </div>
       </div>
+
+      {statements.length > 0 && (
+        <>
+          <h2 className="text-sm font-mono text-slate-500 uppercase tracking-widest mb-3">
+            Amazon Monthly P&amp;L
+          </h2>
+          <div className="overflow-x-auto rounded-xl border border-white/5 mb-8">
+            <table className="w-full min-w-[640px] text-sm">
+              <thead>
+                <tr className="bg-[#0a1220] text-xs font-mono text-slate-500 uppercase">
+                  <th className="text-left px-4 py-3 font-normal">Month</th>
+                  <th className="text-right px-4 py-3 font-normal">Sales</th>
+                  <th className="text-right px-4 py-3 font-normal">FBA</th>
+                  <th className="text-right px-4 py-3 font-normal">Subscription</th>
+                  <th className="text-right px-4 py-3 font-normal">Other fees</th>
+                  <th className="text-right px-4 py-3 font-normal">Net</th>
+                  <th className="text-right px-4 py-3 font-normal">Charged to card</th>
+                </tr>
+              </thead>
+              <tbody>
+                {statements.map((s) => {
+                  const net = statementNet(s);
+                  const otherFees =
+                    statementFees(s) - s.fbaFeesUsd - s.subscriptionUsd;
+                  return (
+                    <tr key={s.id} className="border-t border-white/5 bg-[#0a1220]/60 text-slate-300">
+                      <td className="px-4 py-3">
+                        {formatMonth(s.month)}
+                        {s.isPartial && (
+                          <span className="ml-2 text-xs text-amber-400">MTD</span>
+                        )}
+                        {s.unitsSold != null && (
+                          <span className="ml-2 text-xs text-slate-500">
+                            {s.unitsSold} units
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-4 py-3 text-right">${s.salesUsd.toFixed(2)}</td>
+                      <td className="px-4 py-3 text-right text-red-300">-${s.fbaFeesUsd.toFixed(2)}</td>
+                      <td className="px-4 py-3 text-right text-red-300">-${s.subscriptionUsd.toFixed(2)}</td>
+                      <td className="px-4 py-3 text-right text-red-300">-${otherFees.toFixed(2)}</td>
+                      <td
+                        className="px-4 py-3 text-right font-medium"
+                        style={{ color: net >= 0 ? "#86efac" : "#fca5a5" }}
+                      >
+                        {net < 0 ? "-" : ""}${Math.abs(net).toFixed(2)}
+                      </td>
+                      <td className="px-4 py-3 text-right text-slate-500">
+                        {s.debtRecoveryUsd > 0 ? `$${s.debtRecoveryUsd.toFixed(2)}` : "—"}
+                      </td>
+                    </tr>
+                  );
+                })}
+                <tr className="border-t border-white/10 bg-[#0a1220] text-white">
+                  <td className="px-4 py-3 font-mono text-xs uppercase">Total</td>
+                  <td className="px-4 py-3 text-right">${amazon.sales.toFixed(2)}</td>
+                  <td className="px-4 py-3 text-right" colSpan={3}>
+                    <span className="text-red-300">-${amazon.fees.toFixed(2)}</span>
+                  </td>
+                  <td
+                    className="px-4 py-3 text-right font-medium"
+                    style={{ color: amazon.net >= 0 ? "#86efac" : "#fca5a5" }}
+                  >
+                    {amazon.net < 0 ? "-" : ""}${Math.abs(amazon.net).toFixed(2)}
+                  </td>
+                  <td className="px-4 py-3 text-right text-slate-500">
+                    ${amazon.debtRecovery.toFixed(2)}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          {statements
+            .filter((s) => s.notes)
+            .map((s) => (
+              <p key={s.id} className="text-xs text-slate-500 -mt-6 mb-8">
+                {formatMonth(s.month)}: {s.notes}
+              </p>
+            ))}
+        </>
+      )}
 
       <ExpenseChart data={expensesByCategory} />
       <ExpenseTimeline data={expensesByMonth} />

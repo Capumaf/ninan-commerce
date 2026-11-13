@@ -12,6 +12,7 @@ const items = [
   { href: "/os/ppc", label: "PPC" },
   { href: "/os/analytics", label: "Analytics" },
   { href: "/os/finance", label: "Finance" },
+  { href: "/os/trademark", label: "Trademark" },
 ];
 
 export default function MobileSidebar() {
