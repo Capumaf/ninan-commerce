@@ -49,10 +49,10 @@ export default async function ProductsPage() {
                 <Image
                   src={product.imageUrl}
                   alt={product.name.trim()}
-                  width={1400}
-                  height={788}
-                  sizes="(min-width: 768px) 448px, 100vw"
-                  className="mb-5 h-auto w-full rounded-2xl"
+                  width={1200}
+                  height={605}
+                  sizes="(min-width: 768px) 288px, 70vw"
+                  className="mx-auto mb-6 h-auto w-full max-w-[18rem]"
                 />
               ) : (
               <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#eef6ff]">

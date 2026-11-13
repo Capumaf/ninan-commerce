@@ -35,9 +35,12 @@ button {
   font: inherit;
 }
 
-img {
-  max-width: 100%;
-  display: block;
+/* In the base layer so Tailwind max-w-* utilities on images can override it. */
+@layer base {
+  img {
+    max-width: 100%;
+    display: block;
+  }
 }
 
 ::selection {
