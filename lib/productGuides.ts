@@ -4,10 +4,54 @@ export interface ProductGuide {
   tools: string[];
   steps: { title: string; text: string }[];
   safetyNotes: string[];
+  // Listing images (same set as the Amazon listing), served from /public.
+  gallery?: { src: string; alt: string; width: number; height: number }[];
+  // Photo for each "included" item (800x600), keyed by the item text.
+  includedImages?: Record<string, string>;
 }
 
 export const productGuides: Record<string, ProductGuide> = {
   dv180: {
+    gallery: [
+      {
+        src: "/images/dv180/push-connect-done.webp",
+        alt: "Dryer vent kit installed behind a front-load dryer, duct connected to the magnetic wall plate",
+        width: 1024,
+        height: 1024,
+      },
+      {
+        src: "/images/dv180/magnetic-connection.webp",
+        alt: "Magnetic adapter on the foil duct lining up with the stainless wall plate",
+        width: 1254,
+        height: 1254,
+      },
+      {
+        src: "/images/dv180/easy-cleaning.webp",
+        alt: "Duct detached from the wall plate, leaving the vent opening accessible for lint cleaning",
+        width: 1254,
+        height: 1254,
+      },
+      {
+        src: "/images/dv180/cover-larger-area.webp",
+        alt: "2.6 ft flexible duct running from the laundry appliances to the wall plate",
+        width: 1254,
+        height: 1254,
+      },
+      {
+        src: "/images/dv180/dimensions.webp",
+        alt: "Product dimensions: 31.5 in x 4 in duct, 5.7 in square wall plate with 4.3 in opening",
+        width: 1400,
+        height: 1400,
+      },
+    ],
+    includedImages: {
+      "Dryer vent adapter x1": "/images/dv180/parts/adapter.webp",
+      "Wall assembly x1": "/images/dv180/parts/wall-plate.webp",
+      "Vent hose x1": "/images/dv180/parts/hose.webp",
+      "Hose clamps x2": "/images/dv180/parts/clamps.webp",
+      "Wall anchors x4": "/images/dv180/parts/anchors.webp",
+      "Screws x4": "/images/dv180/parts/screws.webp",
+    },
     included: [
       "Dryer vent adapter x1",
       "Wall assembly x1",
