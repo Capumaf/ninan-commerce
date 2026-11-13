@@ -26,8 +26,9 @@ export default async function FinancePage() {
   });
   const amazon = summarizeStatements(statements);
 
+  // Amazon fees are logged as AMAZON_FEES expenses, so they are already included.
   const totalInvested =
-    expenses.reduce((sum, e) => sum + e.amountUsd, 0) + amazon.fees;
+    expenses.reduce((sum, e) => sum + e.amountUsd, 0);
   const totalRevenue =
     statements.length > 0
       ? amazon.sales

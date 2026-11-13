@@ -11,10 +11,11 @@ export default async function OSPage() {
   const statements = await prisma.amazonMonthlyStatement.findMany();
   const amazon = summarizeStatements(statements);
 
-  // Amazon fees count as money put into the business; revenue comes from the
+  // Amazon fees are logged as AMAZON_FEES expenses (one row per fee type per
+  // month), so they are not added again from the statements. Revenue comes from the
   // real Amazon statements once any exist (falls back to price × units sold).
   const totalInvested =
-    expenses.reduce((sum, e) => sum + e.amountUsd, 0) + amazon.fees;
+    expenses.reduce((sum, e) => sum + e.amountUsd, 0);
   const totalRevenue =
     statements.length > 0
       ? amazon.sales
