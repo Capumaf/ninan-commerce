@@ -39,7 +39,7 @@ export const productGuides: Record<string, ProductGuide> = {
       {
         src: "/images/dv180/easy-cleaning.webp",
         title: "Easy to clean",
-        text: "Pull the duct off the wall plate to reach the vent opening and clear lint. Reconnect in seconds, no tools needed.",
+        text: "Pull the duct off the wall plate to reach the vent opening and clear lint. Reconnect in seconds with no tools: only the first installation needs basic tools.",
         alt: "Duct detached from the wall plate, leaving the vent opening accessible for lint cleaning",
         width: 1254,
         height: 1254,

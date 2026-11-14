@@ -232,11 +232,18 @@ export default async function ProductPage({
             </div>
           </Section>
 
-          <Section eyebrow="Before You Start" title="Tools and preparation">
+          <Section eyebrow="Before You Start" title="One-time installation">
+            <Reveal>
+              <p className="-mt-3 mb-6 max-w-2xl text-sm leading-7 text-slate-600">
+                These tools are only needed once, to mount the wall plate. After
+                that, connecting and disconnecting the duct for cleaning takes
+                no tools at all.
+              </p>
+            </Reveal>
             <Reveal className="grid gap-5 lg:grid-cols-[1fr_1.1fr]">
               <div className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm">
                 <h3 className="text-lg font-semibold tracking-tight text-slate-950">
-                  Tools required
+                  Tools for installation
                 </h3>
                 <div className="mt-5 grid gap-3 sm:grid-cols-2">
                   {guide.tools.map((tool) => (
