@@ -36,7 +36,7 @@ export default function HomePage() {
             </a>
 
             <Link
-              href="/products"
+              href="/support"
               className="inline-flex items-center justify-center rounded-full border border-slate-300 bg-white px-7 py-4 text-sm font-semibold text-slate-900 shadow-sm transition hover:border-slate-400"
             >
               Product Support

@@ -19,7 +19,7 @@ export default function Footer() {
         </div>
 
         <div className="flex items-center gap-8 text-sm text-slate-500">
-          <Link href="/products" className="transition hover:text-slate-900">
+          <Link href="/support" className="transition hover:text-slate-900">
             Support
           </Link>
 

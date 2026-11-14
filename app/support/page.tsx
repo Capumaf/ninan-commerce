@@ -46,9 +46,7 @@ export default function SupportPage() {
           </p>
 
           <a
-            href="https://mail.google.com/mail/?view=cm&fs=1&to=support@ninancommerce.com&su=DV180%20Product%20Assistance"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="mailto:support@ninancommerce.com?subject=Magnetic%20Dryer%20Vent%20Kit%20-%20Product%20Assistance"
             className="mt-8 inline-flex items-center justify-center rounded-full bg-[#1d4f8f] px-7 py-4 text-sm font-semibold text-white shadow-sm transition hover:bg-[#163b6b]"
           >
             Send Email
@@ -67,7 +65,7 @@ export default function SupportPage() {
           </p>
 
           <h2 className="mt-4 text-2xl font-semibold tracking-tight text-slate-950">
-            DV180 Installation Guide
+            Installation Guide
           </h2>
 
           <p className="mt-4 text-sm leading-7 text-slate-600">
